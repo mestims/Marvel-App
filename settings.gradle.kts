@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 rootProject.name = "MarvelApp"
 include(":app")
 include(":data-core")
+include(":design-system")

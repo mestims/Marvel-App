@@ -1,11 +1,21 @@
+import java.util.Properties
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
 }
 
+val keysPropertiesFile: File = rootProject.file("keys.properties")
+val keysProperties: Properties = Properties().apply {
+    load(keysPropertiesFile.inputStream())
+}
+
+
 android {
     namespace = "com.mestims.data_core"
     compileSdk = 34
+
+    android.buildFeatures.buildConfig = true
 
     defaultConfig {
         minSdk = 24
@@ -23,6 +33,13 @@ android {
             )
         }
     }
+
+    defaultConfig {
+        buildConfigField("String", "PUBLIC_KEY", keysProperties["PUBLIC_KEY"]?.toString().orEmpty())
+        buildConfigField("String", "PRIVATE_KEY", keysProperties["PRIVATE_KEY"]?.toString().orEmpty())
+        buildConfigField("String", "BASE_URL", "\"https://gateway.marvel.com:443/v1/public/\"")
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
