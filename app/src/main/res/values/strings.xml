@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MarvelApp</string>
+    <string name="title_home">Home</string>
+    <string name="error_generic">Algo deu errado. Tente novamente</string>
 </resources>

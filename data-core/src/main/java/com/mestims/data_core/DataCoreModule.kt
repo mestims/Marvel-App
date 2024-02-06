@@ -53,7 +53,7 @@ val dataCoreModule = module {
 
     factory<Converter.Factory> { GsonConverterFactory.create() }
 
-    factory {
+    factory<Retrofit> {
         Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .client(get(named(HTTP_CLIENT_MARVEL)))

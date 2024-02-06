@@ -37,7 +37,7 @@ android {
     defaultConfig {
         buildConfigField("String", "PUBLIC_KEY", keysProperties["PUBLIC_KEY"]?.toString().orEmpty())
         buildConfigField("String", "PRIVATE_KEY", keysProperties["PRIVATE_KEY"]?.toString().orEmpty())
-        buildConfigField("String", "BASE_URL", "\"https://gateway.marvel.com:443/v1/public/\"")
+        buildConfigField("String", "BASE_URL", "\"https://gateway.marvel.com:443/\"")
     }
 
     compileOptions {
@@ -59,6 +59,7 @@ dependencies {
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
