@@ -6,10 +6,16 @@ import org.koin.dsl.module
 
 val databaseModule = module {
 
-    single<CharacterDao> {
+    single<CharacterDatabase> {
         Room.databaseBuilder(
             androidContext(),
             CharacterDatabase::class.java, "character-database"
-        ).build().characterDao()
+        ).build()
     }
+
+    single<CharacterDao> {
+        get<CharacterDatabase>().characterDao()
+    }
+
+    factory { CharacterRemoteMediator(get(), get()) }
 }

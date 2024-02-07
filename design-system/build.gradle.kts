@@ -40,6 +40,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
+    implementation("com.github.bumptech.glide:glide:4.12.0")
 
     annotationProcessor("androidx.databinding:databinding-compiler:8.2.2")
 

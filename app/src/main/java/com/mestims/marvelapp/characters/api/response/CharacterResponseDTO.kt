@@ -2,6 +2,7 @@ package com.mestims.marvelapp.characters.api.response
 
 import com.google.gson.annotations.SerializedName
 import com.mestims.marvelapp.characters.model.Character
+import com.mestims.marvelapp.characters.persistence.CharacterEntity
 
 
 data class CharacterResponseDTO(
@@ -17,5 +18,12 @@ fun CharacterResponseDTO.toModel() = Character(
     name = name,
     description = description,
     resourceURI = resourceURI,
+    thumbnail = thumbnail?.toUrl()
+)
+
+fun CharacterResponseDTO.toEntity() = CharacterEntity(
+    id = id,
+    name = name,
+    description = description,
     thumbnail = thumbnail?.toUrl()
 )

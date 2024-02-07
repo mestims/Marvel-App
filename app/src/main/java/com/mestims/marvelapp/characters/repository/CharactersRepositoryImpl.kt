@@ -1,26 +1,27 @@
 package com.mestims.marvelapp.characters.repository
 
-import com.mestims.marvelapp.characters.api.CharactersApi
-import com.mestims.marvelapp.characters.api.response.toModel
-import com.mestims.marvelapp.characters.model.Character
-import com.mestims.marvelapp.characters.paging.CharactersPagingSource
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import com.mestims.marvelapp.characters.persistence.CharacterDao
+import com.mestims.marvelapp.characters.persistence.CharacterRemoteMediator
 
-class CharactersRepositoryImpl(private val api: CharactersApi, private val dao: CharacterDao): CharactersRepository {
+class CharactersRepositoryImpl(
+    private val dao: CharacterDao,
+    private val mediator: CharacterRemoteMediator
+) : CharactersRepository {
 
-    override fun getCharacters(query: String) = CharactersPagingSource(
-        query = query,
-        fetchCharacters = { queries ->
-            api.getCharacters(queries)
-        }
-    )
+    @OptIn(ExperimentalPagingApi::class)
+    override fun getCharacters(query: String, pagingConfig: PagingConfig) = Pager(
+        config = pagingConfig,
+        remoteMediator = mediator.apply { this.query = query }
+    ) {
+        dao.pagingSource()
+    }.flow
 
-    override suspend fun getCharacterDetail(id: String) = api.getCharacterDetail(id)
-        .data
-        .results
-        .firstOrNull()
-        ?.toModel()
-
-    override suspend fun getPersistedCharacters(): List<Character> = dao.getAll().map { it.toModel() }
+    override fun getFavoriteCharacters() = Pager(
+        config = PagingConfig(20)
+    ) { dao.getFavorites(true) }
+        .flow
 
 }
