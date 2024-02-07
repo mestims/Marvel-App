@@ -1,15 +1,12 @@
 package com.mestims.marvelapp.characters.repository
 
-import com.mestims.marvelapp.characters.model.Character
-import com.mestims.marvelapp.characters.paging.CharactersPagingSource
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.mestims.marvelapp.characters.persistence.CharacterEntity
+import kotlinx.coroutines.flow.Flow
 
 interface CharactersRepository {
 
-    fun getCharacters(query: String): CharactersPagingSource
-
-    suspend fun getCharacterDetail(id: String): Character?
-
-    suspend fun getPersistedCharacters() : List<Character>
-
-
+    fun getCharacters(query: String, pagingConfig: PagingConfig): Flow<PagingData<CharacterEntity>>
+    fun getFavoriteCharacters(): Flow<PagingData<CharacterEntity>>
 }

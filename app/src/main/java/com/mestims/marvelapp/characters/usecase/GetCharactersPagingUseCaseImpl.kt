@@ -1,6 +1,5 @@
 package com.mestims.marvelapp.characters.usecase
 
-import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
@@ -13,17 +12,14 @@ internal class GetCharactersPagingUseCaseImpl(
     private val repository: CharactersRepository
 ) : GetCharactersPagingUseCase {
 
-    override suspend fun invoke(query: String, pagingConfig: PagingConfig): Flow<PagingData<Character>> {
-        val persistedCharacters = repository.getPersistedCharacters().associateBy { it.id }
+    override suspend fun invoke(
+        query: String,
+        pagingConfig: PagingConfig
+    ): Flow<PagingData<Character>> =
+        repository.getCharacters(query, pagingConfig).map { it.map { entity -> entity.toModel() } }
 
-        return Pager(config = pagingConfig) {
-            repository.getCharacters(query)
-        }.flow
-            .map { source ->
-                source.map { character ->
-                    val isPersisted = persistedCharacters[character.id]
-                    character.apply { isFavorite = isPersisted != null }
-                }
-            }
-    }
+
+    override suspend fun invoke(pagingConfig: PagingConfig): Flow<PagingData<Character>> =
+        repository.getFavoriteCharacters().map { it.map { entity -> entity.toModel() } }
+
 }

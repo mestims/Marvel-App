@@ -8,4 +8,6 @@ import kotlinx.coroutines.flow.Flow
 interface GetCharactersPagingUseCase {
 
     suspend operator fun invoke(query: String, pagingConfig: PagingConfig): Flow<PagingData<Character>>
+
+    suspend operator fun invoke(pagingConfig: PagingConfig): Flow<PagingData<Character>>
 }

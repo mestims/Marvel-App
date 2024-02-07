@@ -13,18 +13,23 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.mestims.design_system.extensions.exportImage
 import com.mestims.marvelapp.characters.model.Character
 import com.mestims.marvelapp.databinding.HolderProductBinding
+import java.io.File
 
 
-class CharactersAdapter(private val onFavoriteClick: (Character) -> Unit) :
+class CharactersAdapter(
+    private val onFavoriteClick: (Character) -> Unit,
+    private val onShareImageClick: (File) -> Unit
+) :
     PagingDataAdapter<Character, CharactersAdapter.ViewHolder>(diffCallback) {
 
     override fun getItemViewType(position: Int) = CHARACTER_VIEW_TYPE
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         getItem(position)?.let {
-            holder.bind(it, onFavoriteClick)
+            holder.bind(it, onFavoriteClick, onShareImageClick)
         }
     }
 
@@ -38,7 +43,11 @@ class CharactersAdapter(private val onFavoriteClick: (Character) -> Unit) :
         private val binding: HolderProductBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(character: Character, onFavoriteClick: (Character) -> Unit) {
+        fun bind(
+            character: Character,
+            onFavoriteClick: (Character) -> Unit,
+            onShareImageClick: (File) -> Unit
+        ) {
 
             binding.tvCollapsedCharacterName.text = character.name
             binding.tvExpandedCharacterName.text = character.name
@@ -49,6 +58,11 @@ class CharactersAdapter(private val onFavoriteClick: (Character) -> Unit) :
             setupFavoriteButton(binding.ivExpandedFavorite, onFavoriteClick, character)
 
             handleGroupVisibility(character.isExpanded)
+
+            binding.ivExpandedShare.setOnClickListener {
+                val image = binding.ivExpandedCharacterImage.exportImage()
+                onShareImageClick(image)
+            }
 
             Glide.with(itemView)
                 .load(character.thumbnail)
@@ -134,5 +148,7 @@ class CharactersAdapter(private val onFavoriteClick: (Character) -> Unit) :
             }
         }
     }
+
+
 }
 

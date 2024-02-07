@@ -2,4 +2,7 @@
     <string name="app_name">MarvelApp</string>
     <string name="title_home">Home</string>
     <string name="error_generic">Algo deu errado. Tente novamente</string>
+    <string name="menu_search">Busca</string>
+    <string name="menu_favorite">Favoritos</string>
+    <string name="empty_state_string">Nenhum item encontrado</string>
 </resources>
