@@ -36,6 +36,7 @@ Como o projeto se utiliza de chaves de desenvolvedor MARVEL para conseguir fazer
 PUBLIC_KEY="<sua chave publica>"
 PRIVATE_KEY="<sua chave privada>"
 ```
+Você pode também encontrar o APK já compilado com as chaves em RELEASES
 
 <h1>Executando os Testes</h1>
 Esse projeto conta com testes unitários para a garantia de regras e implementações. Para rodar os testes basta utilizar o seguinte comando:
