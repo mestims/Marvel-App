@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
+import androidx.paging.filter
 import com.mestims.marvelapp.characters.model.Character
 import com.mestims.marvelapp.characters.persistence.CharacterDao
 import com.mestims.marvelapp.characters.persistence.toEntity
@@ -13,8 +14,13 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flatMap
+import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.replay
+import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -47,7 +53,10 @@ class CharactersViewModel(
                 }
 
             }
-            .cachedIn(viewModelScope)
+            .cachedIn(viewModelScope).combine(_query) { pagingData, query ->
+                pagingData.filter { it.name?.startsWith(query) == true }
+            }
+
     }
 
     fun search(newText: String?) {
@@ -71,4 +80,5 @@ class CharactersViewModel(
     fun setMode(favoriteMode: Boolean?) {
         this.favoriteMode = favoriteMode ?: false
     }
+
 }

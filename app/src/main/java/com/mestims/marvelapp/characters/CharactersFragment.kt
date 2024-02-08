@@ -1,19 +1,17 @@
 package com.mestims.marvelapp.characters
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
-import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
+import androidx.paging.LoadType
 import com.mestims.design_system.extensions.openShare
 import com.mestims.design_system.extensions.viewBinding
 import com.mestims.marvelapp.R
@@ -46,24 +44,24 @@ class CharactersFragment : Fragment(R.layout.fragment_character) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         setupScreenMode()
-        setupMenu()
         setupAdapter()
         collectCharacters()
         collectListState()
+        setupTryAgain()
     }
 
     private fun setupScreenMode() {
-        val favoriteMode = arguments?.getBoolean(FAVORITE_MODE_ARG)
+        val favoriteMode = isFavoriteMode()
         viewModel.setMode(favoriteMode)
     }
 
-    private fun setupMenu() {
-        requireActivity().addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_search, menu)
-                val searchItem = menu.findItem(R.id.search)
-                val searchView = searchItem.actionView as SearchView
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.search -> {
+                val searchView = item.actionView as SearchView
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         return true
@@ -74,18 +72,11 @@ class CharactersFragment : Fragment(R.layout.fragment_character) {
                         return true
                     }
                 })
+                //Write here what to do you on click
+                return true
             }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.search -> {
-                        true
-                    }
-
-                    else -> false
-                }
-            }
-        }, viewLifecycleOwner)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setupAdapter() {
@@ -117,24 +108,16 @@ class CharactersFragment : Fragment(R.layout.fragment_character) {
                     binding.tvEmpty.isVisible =
                         state.append is LoadState.NotLoading && state.append.endOfPaginationReached && charactersAdapter.itemCount < 1
 
-                    when (state.refresh) {
-                        is LoadState.Loading -> {
-
-                        }
-
-                        is LoadState.NotLoading -> {
-
-                        }
-
-                        is LoadState.Error -> {
-
-                        }
-
-                    }
+                    binding.groupError.isVisible = state.refresh is LoadState.Error && charactersAdapter.itemCount < 1
                 }
             }
         }
     }
+
+    private fun setupTryAgain() {
+//        binding.btnRetry.setOnClickListener { viewModel.tryAgain()  }
+    }
+
 
     private fun onFavoriteClick(character: Character) {
         viewModel.onFavoriteClick(character)
@@ -143,6 +126,8 @@ class CharactersFragment : Fragment(R.layout.fragment_character) {
     private fun onShareImageClick(file: File) {
         openShare(file)
     }
+
+    private fun isFavoriteMode() = arguments?.getBoolean(FAVORITE_MODE_ARG)
 }
 
 

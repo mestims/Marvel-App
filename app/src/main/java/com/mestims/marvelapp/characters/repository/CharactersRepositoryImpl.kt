@@ -3,8 +3,10 @@ package com.mestims.marvelapp.characters.repository
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.filter
 import com.mestims.marvelapp.characters.persistence.CharacterDao
 import com.mestims.marvelapp.characters.persistence.CharacterRemoteMediator
+import kotlinx.coroutines.flow.filter
 
 class CharactersRepositoryImpl(
     private val dao: CharacterDao,
@@ -16,7 +18,7 @@ class CharactersRepositoryImpl(
         config = pagingConfig,
         remoteMediator = mediator.apply { this.query = query }
     ) {
-        dao.pagingSource()
+        dao.pagingSource("$query%")
     }.flow
 
     override fun getFavoriteCharacters() = Pager(

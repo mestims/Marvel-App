@@ -21,8 +21,8 @@ interface CharacterDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(characters: CharacterEntity)
 
-    @Query("SELECT * FROM characterEntity ORDER BY name ASC")
-    fun pagingSource(): PagingSource<Int, CharacterEntity>
+    @Query("SELECT * FROM characterEntity WHERE name LIKE :query ORDER BY name ASC")
+    fun pagingSource(query: String): PagingSource<Int, CharacterEntity>
 
 
     @Query("DELETE FROM characterEntity WHERE id = :id ")

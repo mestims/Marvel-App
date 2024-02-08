@@ -39,9 +39,12 @@ class CharacterRemoteMediator(
                     return MediatorResult.Success(endOfPaginationReached = true)
 
                 LoadType.APPEND -> {
-                    val nextKey = remoteKeyDao.remoteKeyByLabel("character-key")?.nextKey
-
-                    nextKey ?: 0
+                    val remoteKey = remoteKeyDao.remoteKeyByLabel("character-key")
+                    if (remoteKey?.query == query) {
+                        remoteKey.nextKey ?: 0
+                    } else {
+                        0
+                    }
                 }
             }
 
@@ -54,7 +57,7 @@ class CharacterRemoteMediator(
                 if (loadType == LoadType.REFRESH) {
                     characterDao.clearAll()
                 }
-                remoteKeyDao.insertOrReplace(RemoteKeyEntity("character-key", loadKey + 20))
+                remoteKeyDao.insertOrReplace(RemoteKeyEntity("character-key", loadKey + 20, query))
                 characterDao.insertAll(response.data.results.map(CharacterResponseDTO::toEntity))
             }
             MediatorResult.Success(
@@ -87,14 +90,5 @@ class CharacterRemoteMediator(
     private fun createQueries(offset: Int) = buildMap {
         put(OFFSET, offset.toString())
         if (query.isNotEmpty()) put(NAME_STARTS_WITH, query)
-    }
-
-    private fun getRefreshKey(state: PagingState<Int, CharacterEntity>): Int? {
-        return state.anchorPosition?.let { anchorPosition ->
-            val anchorPage = state.closestPageToPosition(anchorPosition)
-            anchorPage?.prevKey?.plus(LIMIT) ?: anchorPage?.nextKey?.minus(
-                LIMIT
-            )
-        }
     }
 }

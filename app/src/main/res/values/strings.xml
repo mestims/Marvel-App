@@ -5,4 +5,5 @@
     <string name="menu_search">Busca</string>
     <string name="menu_favorite">Favoritos</string>
     <string name="empty_state_string">Nenhum item encontrado</string>
+    <string name="try_again">tentar novamente\n</string>
 </resources>

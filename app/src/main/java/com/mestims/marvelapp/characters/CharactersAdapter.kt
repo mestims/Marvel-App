@@ -13,6 +13,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.mestims.design_system.R
 import com.mestims.design_system.extensions.exportImage
 import com.mestims.marvelapp.characters.model.Character
 import com.mestims.marvelapp.databinding.HolderProductBinding
@@ -66,12 +67,12 @@ class CharactersAdapter(
 
             Glide.with(itemView)
                 .load(character.thumbnail)
-//                .fallback(R.drawable.ic_image_error)
+                .fallback(R.drawable.ic_image_error)
                 .into(binding.ivCollapsedCharacterImage)
 
             Glide.with(itemView)
                 .load(character.thumbnail)
-//                .fallback(R.drawable.ic_image_error)
+                .fallback(R.drawable.ic_image_error)
                 .into(binding.ivExpandedCharacterImage)
 
 
