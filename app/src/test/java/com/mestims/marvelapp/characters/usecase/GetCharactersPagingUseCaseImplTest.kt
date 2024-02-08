@@ -1,4 +1,4 @@
-package com.mestims.marvelapp.usecase
+package com.mestims.marvelapp.characters.usecase
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager

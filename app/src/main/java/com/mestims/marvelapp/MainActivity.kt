@@ -5,12 +5,13 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.MenuProvider
 import com.mestims.design_system.extensions.viewBinding
 import com.mestims.marvelapp.databinding.ActivityMainBinding
 
+
+private const val FAVORITE_PAGE_INDEX = 1
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,15 +19,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupNavController(binding.toolbarApp)
         installSplashScreen()
         setupPager()
         setupMenu()
-
-    }
-
-    private fun setupNavController(toolbar: Toolbar) {
-//        val appBarConfiguration = AppBarConfiguration()
     }
 
     private fun setupPager() {
@@ -55,11 +50,14 @@ class MainActivity : AppCompatActivity() {
                         true
                     }
 
+                    R.id.favorite -> {
+                        binding.pager.currentItem = FAVORITE_PAGE_INDEX
+                        true
+                    }
+
                     else -> false
                 }
             }
         }, this)
     }
-
-
 }

@@ -1,4 +1,4 @@
-package com.mestims.marvelapp.persistence
+package com.mestims.marvelapp.characters.persistence
 
 import android.os.Build.VERSION_CODES.Q
 import androidx.paging.ExperimentalPagingApi
@@ -11,10 +11,7 @@ import androidx.room.withTransaction
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.mestims.marvelapp.characters.api.CharactersApi
-import com.mestims.marvelapp.characters.persistence.CharacterDatabase
-import com.mestims.marvelapp.characters.persistence.CharacterEntity
-import com.mestims.marvelapp.characters.persistence.CharacterRemoteMediator
-import com.mestims.marvelapp.util.CharacterFactory
+import com.mestims.marvelapp.characters.util.CharacterFactory
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -1,4 +1,4 @@
-package com.mestims.marvelapp.util
+package com.mestims.marvelapp.characters.util
 
 import com.mestims.marvelapp.characters.api.response.CharacterResponseDTO
 import com.mestims.marvelapp.characters.api.response.DataResponse
